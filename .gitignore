@@ -1,0 +1,32 @@
+vendor/
+.vscode/
+*.log
+*.env
+.DS_Store
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# JetBrains IDEs (например, PyCharm, PhpStorm)
+*.iml
+.idea/
+
+# Eclipse
+.project
+.classpath
+.c9/
+.settings/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/

@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__.'/vendor/autoload.php';
+
+use HeadFirstDesignPatterns\SimUDuck\MallardDuck;
+use HeadFirstDesignPatterns\SimUDuck\RedheadDuck;
+use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
+
+/** @var AbstractDuck[] $duckList */
+$duckList = [
+    new MallardDuck(),
+    new RedheadDuck(),
+];
+
+$countDucks = count($duckList) - 1;
+
+foreach ($duckList as $index => $duck) {
+    $duck->display();
+
+    print_r("Duck says:\n");
+    $duck->quack();
+
+    print_r("Duck doing:\n");
+    $duck->swim();
+
+    if ($index < $countDucks) {
+        print_r("\n=============\n\n");
+    }
+}
