@@ -4,11 +4,23 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\SimUDuck;
 
+use HeadFirstDesignPatterns\SimUDuck\Contracts\FlyBehavior;
+use HeadFirstDesignPatterns\SimUDuck\Contracts\QuackBehavior;
+
 abstract class AbstractDuck
 {
-    public function quack(): void
+    protected FlyBehavior $flyBehavior;
+
+    protected QuackBehavior $quackBehavior;
+
+    public function performQuack(): void
     {
-        echo "quack-quack\n";
+        $this->quackBehavior->quack();
+    }
+
+    public function performFly(): void
+    {
+        $this->flyBehavior->fly();
     }
 
     public function swim(): void
@@ -16,9 +28,9 @@ abstract class AbstractDuck
         echo "swimming\n";
     }
 
-    public function fly(): void
+    public function setFlyBehavior(FlyBehavior $behavior): void
     {
-        echo "flying\n";
+        $this->flyBehavior = $behavior;
     }
 
     abstract public function display(): void;

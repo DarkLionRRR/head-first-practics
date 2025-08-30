@@ -25,11 +25,11 @@ foreach ($duckList as $index => $duck) {
     $duck->display();
 
     print_r("Duck says:\n");
-    $duck->quack();
+    $duck->performQuack();
 
     print_r("Duck doing:\n");
     $duck->swim();
-    $duck->fly();
+    $duck->performFly();
 
     if ($index < $countDucks) {
         print_r("\n=============\n\n");
