@@ -5,16 +5,18 @@ declare(strict_types=1);
 
 require_once __DIR__.'/vendor/autoload.php';
 
-use HeadFirstDesignPatterns\SimUDuck\RubberDuck;
-use HeadFirstDesignPatterns\SimUDuck\MallardDuck;
-use HeadFirstDesignPatterns\SimUDuck\RedheadDuck;
 use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\DecoyDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\RubberDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\MallardDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\RedheadDuck;
 
 /** @var AbstractDuck[] $duckList */
 $duckList = [
     new MallardDuck(),
     new RedheadDuck(),
     new RubberDuck(),
+    new DecoyDuck(),
 ];
 
 $countDucks = count($duckList) - 1;
@@ -25,12 +27,9 @@ foreach ($duckList as $index => $duck) {
     print_r("Duck says:\n");
     $duck->quack();
 
-    try {
-        print_r("Duck doing:\n");
-        random_int(0, 1) ? $duck->swim() : $duck->fly();
-    } catch (Throwable $t) {
-        printf("Error: %s\n", $t->getMessage());
-    }
+    print_r("Duck doing:\n");
+    $duck->swim();
+    $duck->fly();
 
     if ($index < $countDucks) {
         print_r("\n=============\n\n");
