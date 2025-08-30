@@ -3,42 +3,15 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use HeadFirstDesignPatterns\Framework\Console\Kernel;
+
 require_once __DIR__.'/vendor/autoload.php';
 
-use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
-use HeadFirstDesignPatterns\SimUDuck\Ducks\DecoyDuck;
-use HeadFirstDesignPatterns\SimUDuck\Ducks\ModelDuck;
-use HeadFirstDesignPatterns\SimUDuck\Ducks\RubberDuck;
-use HeadFirstDesignPatterns\SimUDuck\Ducks\MallardDuck;
-use HeadFirstDesignPatterns\SimUDuck\Ducks\RedheadDuck;
-use HeadFirstDesignPatterns\SimUDuck\Flights\FlyRocketPowered;
+$status = Kernel::new()
+    ->registerCommands()
+    ->handle(new ArgvInput(), new ConsoleOutput())
+;
 
-/** @var AbstractDuck[] $duckList */
-$duckList = [
-    new MallardDuck(),
-    new RedheadDuck(),
-    new RubberDuck(),
-    new DecoyDuck(),
-    new ModelDuck(),
-];
-
-$countDucks = count($duckList) - 1;
-
-foreach ($duckList as $index => $duck) {
-    $duck->display();
-
-    print_r("Duck says:\n");
-    $duck->performQuack();
-
-    print_r("Duck doing:\n");
-    $duck->swim();
-    $duck->performFly();
-
-    print_r("\n=============\n\n");
-}
-
-print_r("Внезапно утка-приманка полетела...\n\n");
-$modelDuck = $duckList[$countDucks];
-$modelDuck->setFlyBehavior(new FlyRocketPowered());
-$modelDuck->display();
-$modelDuck->performFly();
+exit($status);
