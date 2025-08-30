@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 require_once __DIR__.'/vendor/autoload.php';
 
+use HeadFirstDesignPatterns\SimUDuck\RubberDuck;
 use HeadFirstDesignPatterns\SimUDuck\MallardDuck;
 use HeadFirstDesignPatterns\SimUDuck\RedheadDuck;
 use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
@@ -13,6 +14,7 @@ use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
 $duckList = [
     new MallardDuck(),
     new RedheadDuck(),
+    new RubberDuck(),
 ];
 
 $countDucks = count($duckList) - 1;
