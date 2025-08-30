@@ -13,6 +13,16 @@ abstract class AbstractDuck
 
     protected QuackBehavior $quackBehavior;
 
+    public function setFlyBehavior(FlyBehavior $behavior): void
+    {
+        $this->flyBehavior = $behavior;
+    }
+
+    public function setQuackBehavior(QuackBehavior $behavior): void
+    {
+        $this->quackBehavior = $behavior;
+    }
+
     public function performQuack(): void
     {
         $this->quackBehavior->quack();
@@ -26,11 +36,6 @@ abstract class AbstractDuck
     public function swim(): void
     {
         echo "swimming\n";
-    }
-
-    public function setFlyBehavior(FlyBehavior $behavior): void
-    {
-        $this->flyBehavior = $behavior;
     }
 
     abstract public function display(): void;
