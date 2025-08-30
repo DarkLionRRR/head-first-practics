@@ -16,5 +16,10 @@ abstract class AbstractDuck
         echo "swimming\n";
     }
 
+    public function fly(): void
+    {
+        echo "flying\n";
+    }
+
     abstract public function display(): void;
 }

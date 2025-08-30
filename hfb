@@ -23,8 +23,12 @@ foreach ($duckList as $index => $duck) {
     print_r("Duck says:\n");
     $duck->quack();
 
-    print_r("Duck doing:\n");
-    $duck->swim();
+    try {
+        print_r("Duck doing:\n");
+        random_int(0, 1) ? $duck->swim() : $duck->fly();
+    } catch (Throwable $t) {
+        printf("Error: %s\n", $t->getMessage());
+    }
 
     if ($index < $countDucks) {
         print_r("\n=============\n\n");
