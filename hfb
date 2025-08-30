@@ -5,14 +5,21 @@ declare(strict_types=1);
 
 require_once __DIR__.'/vendor/autoload.php';
 
-use HeadFirstDesignPatterns\SimUDuck\MallardDuck;
-use HeadFirstDesignPatterns\SimUDuck\RedheadDuck;
 use HeadFirstDesignPatterns\SimUDuck\AbstractDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\DecoyDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\ModelDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\RubberDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\MallardDuck;
+use HeadFirstDesignPatterns\SimUDuck\Ducks\RedheadDuck;
+use HeadFirstDesignPatterns\SimUDuck\Flights\FlyRocketPowered;
 
 /** @var AbstractDuck[] $duckList */
 $duckList = [
     new MallardDuck(),
     new RedheadDuck(),
+    new RubberDuck(),
+    new DecoyDuck(),
+    new ModelDuck(),
 ];
 
 $countDucks = count($duckList) - 1;
@@ -21,12 +28,17 @@ foreach ($duckList as $index => $duck) {
     $duck->display();
 
     print_r("Duck says:\n");
-    $duck->quack();
+    $duck->performQuack();
 
     print_r("Duck doing:\n");
     $duck->swim();
+    $duck->performFly();
 
-    if ($index < $countDucks) {
-        print_r("\n=============\n\n");
-    }
+    print_r("\n=============\n\n");
 }
+
+print_r("Внезапно утка-приманка полетела...\n\n");
+$modelDuck = $duckList[$countDucks];
+$modelDuck->setFlyBehavior(new FlyRocketPowered());
+$modelDuck->display();
+$modelDuck->performFly();

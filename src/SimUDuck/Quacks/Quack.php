@@ -1,0 +1,13 @@
+<?php
+
+namespace HeadFirstDesignPatterns\SimUDuck\Quacks;
+
+use HeadFirstDesignPatterns\SimUDuck\Contracts\QuackBehavior;
+
+final class Quack implements QuackBehavior
+{
+    public function quack(): void
+    {
+        echo "quack-quack\n";
+    }
+}
