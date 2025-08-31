@@ -4,85 +4,61 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation;
 
-use Random\RandomException;
-use HeadFirstDesignPatterns\WeatherStation\Display\ForecastDisplay;
-use HeadFirstDesignPatterns\WeatherStation\Display\StatisticDisplay;
-use HeadFirstDesignPatterns\WeatherStation\Display\CurrentConditionDisplay;
+use HeadFirstDesignPatterns\WeatherStation\Contracts\Subject;
+use HeadFirstDesignPatterns\WeatherStation\Contracts\Observer;
 
-class WeatherData
+class WeatherData implements Subject
 {
-    private CurrentConditionDisplay $currentConditionDisplay;
+    private ObserverSet $observerSet;
 
-    private StatisticDisplay $statisticDisplay;
+    private float $temperature;
 
-    private ForecastDisplay $forecastDisplay;
+    private float $humidity;
+
+    private float $pressure;
 
     public function __construct()
     {
-        $this->currentConditionDisplay = new CurrentConditionDisplay();
-        $this->statisticDisplay = new StatisticDisplay();
-        $this->forecastDisplay = new ForecastDisplay();
+        $this->observerSet = new ObserverSet();
+    }
+
+    public function registerObserver(Observer $observer): void
+    {
+        $this->observerSet->add($observer);
+    }
+
+    public function removeObserver(Observer $observer): void
+    {
+        $this->observerSet->remove($observer);
     }
 
     /**
-     * @throws RandomException
+     * @return \Generator<string>
      */
-    public function measurementsChanged(): void
+    public function notifyObservers(): \Generator
     {
-        $temp = $this->getTemperature();
-        $humidity = $this->getHumidity();
-        $pressure = $this->getPressure();
-
-        $this->currentConditionDisplay->update($temp, $humidity, $pressure);
-        $this->statisticDisplay->update($temp, $humidity, $pressure);
-        $this->forecastDisplay->update($temp, $humidity, $pressure);
+        foreach ($this->observerSet as $observer) {
+            yield $observer->update($this->temperature, $this->humidity, $this->pressure);
+        }
     }
 
     /**
-     * @return array<string, string>
+     * @return \Generator<string>
      */
-    public function showCurrentConditions(): array
+    public function measurementsChanged(): \Generator
     {
-        return $this->currentConditionDisplay->display();
+        yield from $this->notifyObservers();
     }
 
     /**
-     * @return array<string, string>
+     * @return \Generator<string>
      */
-    public function showStatistics(): array
+    public function setMeasurements(float $temperature, float $humidity, float $pressure): \Generator
     {
-        return $this->statisticDisplay->display();
-    }
+        $this->temperature = $temperature;
+        $this->humidity = $humidity;
+        $this->pressure = $pressure;
 
-    /**
-     * @return array<string, string>
-     */
-    public function showForecast(): array
-    {
-        return $this->forecastDisplay->display();
-    }
-
-    /**
-     * @throws RandomException
-     */
-    private function getTemperature(): float
-    {
-        return (float) random_int(-20, 40);
-    }
-
-    /**
-     * @throws RandomException
-     */
-    private function getHumidity(): float
-    {
-        return (float) random_int(40, 80);
-    }
-
-    /**
-     * @throws RandomException
-     */
-    private function getPressure(): float
-    {
-        return (float) random_int(720, 780);
+        yield from $this->measurementsChanged();
     }
 }

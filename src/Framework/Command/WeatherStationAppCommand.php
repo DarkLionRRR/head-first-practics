@@ -8,6 +8,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use HeadFirstDesignPatterns\WeatherStation\WeatherData;
+use HeadFirstDesignPatterns\WeatherStation\Display\ForecastDisplay;
+use HeadFirstDesignPatterns\WeatherStation\Display\StatisticDisplay;
+use HeadFirstDesignPatterns\WeatherStation\Display\CurrentConditionDisplay;
 
 #[AsCommand(
     name: 'app:weather-station',
@@ -15,14 +18,11 @@ use HeadFirstDesignPatterns\WeatherStation\WeatherData;
 )]
 final class WeatherStationAppCommand extends AbstractCommand
 {
-    /** @var string[] */
-    private const array TABLE_HEADERS = ['Показатель', 'Значение'];
-
-    /** @var array<string, string> */
-    private const array VALUE_NAME_DICTIONARY = [
-        'temperature' => 'Температура',
-        'humidity'    => 'Влажность',
-        'pressure'    => 'Давление',
+    /** @var array<float[]> */
+    private const array SAMPLE_WEATHER_DATA = [
+        [80, 65, 30.4],
+        [82, 70, 29.2],
+        [78, 90, 29.2],
     ];
 
     protected string $title = 'Приложение погодной станции из главы 2';
@@ -31,43 +31,17 @@ final class WeatherStationAppCommand extends AbstractCommand
     {
         $weatherData = new WeatherData();
 
-        $this->io->info('Обновление погодных данных...');
+        $currentConditionDisplay = new CurrentConditionDisplay($weatherData);
+        $statisticDisplay = new StatisticDisplay($weatherData);
+        $forecastDisplay = new ForecastDisplay($weatherData);
 
-        try {
-            $weatherData->measurementsChanged();
+        foreach (self::SAMPLE_WEATHER_DATA as $dataset) {
+            $this->io->info('Обновление погодных данных...');
             usleep(512_000);
-        } catch (\Throwable $t) {
-            throw new \RuntimeException($t->getMessage(), $t->getCode(), $t);
-        }
 
-        $outputData = [
-            [
-                'title' => 'Текущие показания:',
-                'data'  => $weatherData->showCurrentConditions(),
-            ],
-            [
-                'title' => 'Статистика:',
-                'data'  => $weatherData->showStatistics(),
-            ],
-            [
-                'title' => 'Прогноз:',
-                'data'  => $weatherData->showForecast(),
-            ],
-        ];
-
-        foreach ($outputData as $item) {
-            $this->io->section($item['title']);
-            $this->io->table(
-                self::TABLE_HEADERS,
-                array_map(
-                    static fn (string $value, string $key): array => [
-                        self::VALUE_NAME_DICTIONARY[$key] ?? $key,
-                        $value,
-                    ],
-                    array_values($item['data']),
-                    array_keys($item['data']),
-                ),
-            );
+            foreach ($weatherData->setMeasurements(...$dataset) as $message) {
+                $this->io->writeln($message);
+            }
         }
     }
 }
