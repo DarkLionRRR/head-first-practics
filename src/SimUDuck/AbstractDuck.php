@@ -23,20 +23,20 @@ abstract class AbstractDuck
         $this->quackBehavior = $behavior;
     }
 
-    public function performQuack(): void
+    public function performQuack(): string
     {
-        $this->quackBehavior->quack();
+        return $this->quackBehavior->quack();
     }
 
-    public function performFly(): void
+    public function performFly(): string
     {
-        $this->flyBehavior->fly();
+        return $this->flyBehavior->fly();
     }
 
-    public function swim(): void
+    public function swim(): string
     {
-        echo "swimming\n";
+        return 'swimming';
     }
 
-    abstract public function display(): void;
+    abstract public function display(): string;
 }

@@ -16,8 +16,8 @@ final class DecoyDuck extends AbstractDuck
         $this->flyBehavior = new FlyNoWay();
     }
 
-    public function display(): void
+    public function display(): string
     {
-        echo "This is decoy duck.\n";
+        return 'This is decoy duck.';
     }
 }

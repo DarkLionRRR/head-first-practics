@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HeadFirstDesignPatterns\Framework\Console\Command;
+namespace HeadFirstDesignPatterns\Framework\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;

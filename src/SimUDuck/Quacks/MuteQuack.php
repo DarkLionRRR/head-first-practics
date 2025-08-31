@@ -8,8 +8,8 @@ use HeadFirstDesignPatterns\SimUDuck\Contracts\QuackBehavior;
 
 final class MuteQuack implements QuackBehavior
 {
-    public function quack(): void
+    public function quack(): string
     {
-        echo "I can't quack\n";
+        return "Can't quack";
     }
 }

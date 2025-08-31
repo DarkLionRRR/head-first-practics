@@ -8,8 +8,8 @@ use HeadFirstDesignPatterns\SimUDuck\Contracts\QuackBehavior;
 
 final class Quack implements QuackBehavior
 {
-    public function quack(): void
+    public function quack(): string
     {
-        echo "quack-quack\n";
+        return 'quack-quack';
     }
 }

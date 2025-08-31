@@ -9,9 +9,6 @@ use HeadFirstDesignPatterns\Framework\Console\Kernel;
 
 require_once __DIR__.'/vendor/autoload.php';
 
-$status = Kernel::new()
-    ->registerCommands()
-    ->handle(new ArgvInput(), new ConsoleOutput())
-;
+$status = Kernel::new()->handle(new ArgvInput(), new ConsoleOutput());
 
 exit($status);

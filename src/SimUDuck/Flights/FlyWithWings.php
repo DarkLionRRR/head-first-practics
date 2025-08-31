@@ -8,8 +8,8 @@ use HeadFirstDesignPatterns\SimUDuck\Contracts\FlyBehavior;
 
 final class FlyWithWings implements FlyBehavior
 {
-    public function fly(): void
+    public function fly(): string
     {
-        echo "flying\n";
+        return 'flying';
     }
 }

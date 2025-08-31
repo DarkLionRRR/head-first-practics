@@ -16,8 +16,8 @@ final class ModelDuck extends AbstractDuck
         $this->flyBehavior = new FlyNoWay();
     }
 
-    public function display(): void
+    public function display(): string
     {
-        echo "This is model duck.\n";
+        return 'This is model duck.';
     }
 }
