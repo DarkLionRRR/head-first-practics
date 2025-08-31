@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use HeadFirstDesignPatterns\WeatherStation\WeatherData;
 use HeadFirstDesignPatterns\WeatherStation\Display\ForecastDisplay;
+use HeadFirstDesignPatterns\WeatherStation\Display\HeatIndexDisplay;
 use HeadFirstDesignPatterns\WeatherStation\Display\StatisticDisplay;
 use HeadFirstDesignPatterns\WeatherStation\Display\CurrentConditionDisplay;
 
@@ -34,6 +35,7 @@ final class WeatherStationAppCommand extends AbstractCommand
         $currentConditionDisplay = new CurrentConditionDisplay($weatherData);
         $statisticDisplay = new StatisticDisplay($weatherData);
         $forecastDisplay = new ForecastDisplay($weatherData);
+        $heatIndexDisplay = new HeatIndexDisplay($weatherData);
 
         foreach (self::SAMPLE_WEATHER_DATA as $dataset) {
             $this->io->info('Обновление погодных данных...');
