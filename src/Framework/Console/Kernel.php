@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use HeadFirstDesignPatterns\Framework\Command\DuckAppCommand;
 use HeadFirstDesignPatterns\Framework\Console\Helper\ListingHelper;
+use HeadFirstDesignPatterns\Framework\Command\WeatherStationAppCommand;
 
 final class Kernel implements KernelInterface
 {
@@ -27,6 +28,7 @@ final class Kernel implements KernelInterface
     {
         return [
             DuckAppCommand::class,
+            WeatherStationAppCommand::class,
         ];
     }
 
