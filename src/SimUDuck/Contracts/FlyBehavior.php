@@ -6,5 +6,5 @@ namespace HeadFirstDesignPatterns\SimUDuck\Contracts;
 
 interface FlyBehavior
 {
-    public function fly(): void;
+    public function fly(): string;
 }

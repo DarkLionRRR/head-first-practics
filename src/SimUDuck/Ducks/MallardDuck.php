@@ -16,8 +16,8 @@ final class MallardDuck extends AbstractDuck
         $this->flyBehavior = new FlyWithWings();
     }
 
-    public function display(): void
+    public function display(): string
     {
-        echo "This is mallard duck.\n";
+        return 'This is mallard duck.';
     }
 }

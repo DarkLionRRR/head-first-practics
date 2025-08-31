@@ -8,8 +8,8 @@ use HeadFirstDesignPatterns\SimUDuck\Contracts\QuackBehavior;
 
 final class Squeak implements QuackBehavior
 {
-    public function quack(): void
+    public function quack(): string
     {
-        echo "squeak\n";
+        return 'squeak';
     }
 }

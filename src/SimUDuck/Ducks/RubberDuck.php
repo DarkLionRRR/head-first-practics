@@ -16,8 +16,8 @@ final class RubberDuck extends AbstractDuck
         $this->flyBehavior = new FlyNoWay();
     }
 
-    public function display(): void
+    public function display(): string
     {
-        echo "This is rubber duck.\n";
+        return 'This is rubber duck.';
     }
 }
