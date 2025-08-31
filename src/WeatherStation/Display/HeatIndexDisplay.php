@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation\Display;
 
-use HeadFirstDesignPatterns\WeatherStation\Contracts\Subject;
-use HeadFirstDesignPatterns\WeatherStation\Contracts\Observer;
-use HeadFirstDesignPatterns\WeatherStation\Contracts\DisplayElement;
+use HeadFirstDesignPatterns\WeatherStation\WeatherData;
 
-final class HeatIndexDisplay implements Observer, DisplayElement
+final class HeatIndexDisplay extends AbstractDisplay
 {
     private float $heatIndex = 0.0;
 
-    public function __construct(Subject $weatherData)
+    public function update(\SplSubject $subject): void
     {
-        $weatherData->registerObserver($this);
+        if (!$subject instanceof WeatherData) {
+            return;
+        }
+
+        $this->heatIndex = $this->computeHeatIndex(
+            $subject->getTemperature(),
+            $subject->getHumidity(),
+        );
+
+        $this->display();
     }
 
-    public function update(float $temperature, float $humidity, float $pressure): string
+    public function display(): void
     {
-        $this->heatIndex = $this->computeHeatIndex($temperature, $humidity);
-
-        return $this->display();
-    }
-
-    public function display(): string
-    {
-        return sprintf('Heat index is %s', $this->heatIndex);
+        printf("Heat index is %s\n", $this->heatIndex);
     }
 
     private function computeHeatIndex(float $t, float $rh): float

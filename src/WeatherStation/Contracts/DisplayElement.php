@@ -6,5 +6,5 @@ namespace HeadFirstDesignPatterns\WeatherStation\Contracts;
 
 interface DisplayElement
 {
-    public function display(): string;
+    public function display(): void;
 }

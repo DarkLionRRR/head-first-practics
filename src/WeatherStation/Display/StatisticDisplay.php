@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation\Display;
 
-use HeadFirstDesignPatterns\WeatherStation\Contracts\Subject;
-use HeadFirstDesignPatterns\WeatherStation\Contracts\Observer;
-use HeadFirstDesignPatterns\WeatherStation\Contracts\DisplayElement;
+use HeadFirstDesignPatterns\WeatherStation\WeatherData;
 
-final class StatisticDisplay implements Observer, DisplayElement
+final class StatisticDisplay extends AbstractDisplay
 {
     private float $maxTemp = 0.0;
 
@@ -18,13 +16,14 @@ final class StatisticDisplay implements Observer, DisplayElement
 
     private int $numReadings = 0;
 
-    public function __construct(Subject $weatherData)
+    public function update(\SplSubject $subject): void
     {
-        $weatherData->registerObserver($this);
-    }
+        if (!$subject instanceof WeatherData) {
+            return;
+        }
 
-    public function update(float $temperature, float $humidity, float $pressure): string
-    {
+        $temperature = $subject->getTemperature();
+
         $this->tempSum += $temperature;
         ++$this->numReadings;
 
@@ -36,13 +35,13 @@ final class StatisticDisplay implements Observer, DisplayElement
             $this->minTemp = $temperature;
         }
 
-        return $this->display();
+        $this->display();
     }
 
-    public function display(): string
+    public function display(): void
     {
-        return sprintf(
-            'Avg/Max/Min temperature = %s/%s/%s',
+        printf(
+            "Avg/Max/Min temperature = %s/%s/%s\n",
             $this->tempSum / $this->numReadings,
             $this->maxTemp,
             $this->minTemp,

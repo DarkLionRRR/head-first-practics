@@ -32,18 +32,18 @@ final class WeatherStationAppCommand extends AbstractCommand
     {
         $weatherData = new WeatherData();
 
-        $currentConditionDisplay = new CurrentConditionDisplay($weatherData);
-        $statisticDisplay = new StatisticDisplay($weatherData);
-        $forecastDisplay = new ForecastDisplay($weatherData);
-        $heatIndexDisplay = new HeatIndexDisplay($weatherData);
+        new CurrentConditionDisplay($weatherData);
+        new StatisticDisplay($weatherData);
+        new ForecastDisplay($weatherData);
+        new HeatIndexDisplay($weatherData);
 
         foreach (self::SAMPLE_WEATHER_DATA as $dataset) {
             $this->io->info('Обновление погодных данных...');
             usleep(512_000);
 
-            foreach ($weatherData->setMeasurements(...$dataset) as $message) {
-                $this->io->writeln($message);
-            }
+            $weatherData->setMeasurements(...$dataset);
+
+            $this->io->newLine();
         }
     }
 }
