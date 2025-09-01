@@ -20,7 +20,7 @@ final class Application extends ConsoleApplication
     }
 
     /**
-     * @param class-string<AbstractCommand>[] $commands
+     * @param array<class-string<AbstractCommand>> $commands
      */
     public function registerCommands(array $commands = []): self
     {
@@ -31,7 +31,7 @@ final class Application extends ConsoleApplication
     }
 
     /**
-     * @param class-string<HelperInterface>[] $helpers
+     * @param array<class-string<HelperInterface>> $helpers
      */
     public function registerHelpers(array $helpers): self
     {

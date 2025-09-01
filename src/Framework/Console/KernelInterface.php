@@ -15,12 +15,12 @@ interface KernelInterface
     public static function new(): self;
 
     /**
-     * @return class-string<AbstractCommand>[]
+     * @return array<class-string<AbstractCommand>>
      */
     public function commands(): array;
 
     /**
-     * @return class-string<HelperInterface>[]
+     * @return array<class-string<HelperInterface>>
      */
     public function helpers(): array;
 

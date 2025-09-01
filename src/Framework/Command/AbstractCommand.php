@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\Framework\Command;
 
+use Throwable;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,8 +28,8 @@ abstract class AbstractCommand extends Command
 
         try {
             $this->exec($input, $output);
-        } catch (\Throwable $t) {
-            throw new \RuntimeException($t->getMessage(), $t->getCode(), $t);
+        } catch (Throwable $t) {
+            throw new RuntimeException($t->getMessage(), $t->getCode(), $t);
         }
 
         $this->io->success('Завершено успешно.');

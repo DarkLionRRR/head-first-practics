@@ -23,7 +23,7 @@ use HeadFirstDesignPatterns\Framework\Console\Helper\ListingHelper;
 )]
 final class DuckAppCommand extends AbstractCommand
 {
-    /** @var string[] */
+    /** @var array<string> */
     private const array TABLE_HEADERS = ['Type', 'Info', 'Say', 'Doing'];
     protected string $title = 'Приложение с утками из главы 1';
 

@@ -18,7 +18,7 @@ final class HeatIndexListener
     {
         $weatherData = $event->getWeatherData();
 
-        if (null === $this->display) {
+        if ($this->display === null) {
             $this->display = new HeatIndexDisplay();
         }
 

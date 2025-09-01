@@ -19,7 +19,7 @@ use HeadFirstDesignPatterns\WeatherStation\Event\DisplayConsoleOutputtedEvent;
 )]
 final class WeatherStationAppCommand extends AbstractCommand
 {
-    /** @var array<float[]> */
+    /** @var array<array<float>> */
     private const array SAMPLE_WEATHER_DATA = [
         [80, 65, 30.4],
         [82, 70, 29.2],
