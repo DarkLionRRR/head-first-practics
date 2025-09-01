@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\Framework\Console;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use HeadFirstDesignPatterns\Framework\Command\AbstractCommand;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 interface KernelInterface
@@ -15,7 +15,7 @@ interface KernelInterface
     public static function new(): self;
 
     /**
-     * @return array<class-string<AbstractCommand>>
+     * @return array<class-string<Command>>
      */
     public function commands(): array;
 
