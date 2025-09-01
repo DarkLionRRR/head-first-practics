@@ -8,10 +8,10 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use HeadFirstDesignPatterns\WeatherStation\WeatherData;
-use HeadFirstDesignPatterns\WeatherStation\Display\ForecastDisplay;
-use HeadFirstDesignPatterns\WeatherStation\Display\HeatIndexDisplay;
-use HeadFirstDesignPatterns\WeatherStation\Display\StatisticDisplay;
-use HeadFirstDesignPatterns\WeatherStation\Display\CurrentConditionDisplay;
+use HeadFirstDesignPatterns\WeatherStation\WeatherEvents;
+use HeadFirstDesignPatterns\Framework\Console\Application;
+use HeadFirstDesignPatterns\WeatherStation\WeatherRepository;
+use HeadFirstDesignPatterns\WeatherStation\Event\DisplayConsoleOutputtedEvent;
 
 #[AsCommand(
     name: 'app:weather-station',
@@ -30,20 +30,23 @@ final class WeatherStationAppCommand extends AbstractCommand
 
     protected function exec(InputInterface $input, OutputInterface $output): void
     {
-        $weatherData = new WeatherData();
+        /** @var Application $application */
+        $application = $this->getApplication();
+        $dispatcher = $application->getKernel()?->getDispatcher();
+        $weatherRepository = new WeatherRepository(new WeatherData(), $dispatcher);
 
-        new CurrentConditionDisplay($weatherData);
-        new StatisticDisplay($weatherData);
-        new ForecastDisplay($weatherData);
-        new HeatIndexDisplay($weatherData);
+        $dispatcher?->addListener(
+            WeatherEvents::DISPLAY_CONSOLE_OUTPUT,
+            function (DisplayConsoleOutputtedEvent $event): void {
+                $this->io->writeln($event->getOutput());
+            }
+        );
 
         foreach (self::SAMPLE_WEATHER_DATA as $dataset) {
             $this->io->info('Обновление погодных данных...');
             usleep(512_000);
 
-            $weatherData->setMeasurements(...$dataset);
-
-            $this->io->newLine();
+            $weatherRepository->setMeasurements(...$dataset);
         }
     }
 }

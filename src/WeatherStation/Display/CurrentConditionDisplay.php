@@ -4,30 +4,17 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation\Display;
 
-use HeadFirstDesignPatterns\WeatherStation\WeatherData;
-
-final class CurrentConditionDisplay extends AbstractDisplay
+final readonly class CurrentConditionDisplay implements DisplayElement
 {
-    private float $temperature;
+    public function __construct(
+        private float $temperature = 0.0,
+        private float $humidity = 0.0,
+    ) {}
 
-    private float $humidity;
-
-    public function update(\SplSubject $subject): void
+    public function display(): string
     {
-        if (!$subject instanceof WeatherData) {
-            return;
-        }
-
-        $this->temperature = $subject->getTemperature();
-        $this->humidity = $subject->getHumidity();
-
-        $this->display();
-    }
-
-    public function display(): void
-    {
-        printf(
-            "Current conditions: %s F degrees and %s %% humidity\n",
+        return sprintf(
+            'Current conditions: %s F degrees and %s %% humidity',
             $this->temperature,
             $this->humidity,
         );

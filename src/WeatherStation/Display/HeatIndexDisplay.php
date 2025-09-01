@@ -4,29 +4,18 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation\Display;
 
-use HeadFirstDesignPatterns\WeatherStation\WeatherData;
-
-final class HeatIndexDisplay extends AbstractDisplay
+final class HeatIndexDisplay implements DisplayElement
 {
-    private float $heatIndex = 0.0;
+    public function __construct(private float $heatIndex = 0.0) {}
 
-    public function update(\SplSubject $subject): void
+    public function update(float $temperature, float $humidity): void
     {
-        if (!$subject instanceof WeatherData) {
-            return;
-        }
-
-        $this->heatIndex = $this->computeHeatIndex(
-            $subject->getTemperature(),
-            $subject->getHumidity(),
-        );
-
-        $this->display();
+        $this->heatIndex = $this->computeHeatIndex($temperature, $humidity);
     }
 
-    public function display(): void
+    public function display(): string
     {
-        printf("Heat index is %s\n", $this->heatIndex);
+        return sprintf('Heat index is %s', $this->heatIndex);
     }
 
     private function computeHeatIndex(float $t, float $rh): float

@@ -23,14 +23,18 @@ return new Config()
         '@PhpCsFixer'     => true,
         '@PHP84Migration' => true,
         'void_return'     => true,
+
         'ordered_imports' => [
             'imports_order'  => ['class', 'function', 'const'],
             'sort_algorithm' => 'length',
         ],
+
         'binary_operator_spaces' => [
             'operators' => [
                 '=>' => 'align',
             ],
         ],
+
+        'declare_strict_types' => true,
     ])
 ;

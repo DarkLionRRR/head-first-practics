@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation;
 
-use HeadFirstDesignPatterns\Framework\Util\Observable;
-
-class WeatherData extends Observable
+final class WeatherData
 {
     private float $temperature;
 
@@ -14,19 +12,25 @@ class WeatherData extends Observable
 
     private float $pressure;
 
-    public function measurementsChanged(): void
-    {
-        $this->setChanged();
-        $this->notify();
-    }
-
-    public function setMeasurements(float $temperature, float $humidity, float $pressure): void
+    public function setTemperature(float $temperature): self
     {
         $this->temperature = $temperature;
+
+        return $this;
+    }
+
+    public function setHumidity(float $humidity): self
+    {
         $this->humidity = $humidity;
+
+        return $this;
+    }
+
+    public function setPressure(float $pressure): self
+    {
         $this->pressure = $pressure;
 
-        $this->measurementsChanged();
+        return $this;
     }
 
     public function getTemperature(): float
