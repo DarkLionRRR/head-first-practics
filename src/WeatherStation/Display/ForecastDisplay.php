@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\WeatherStation\Display;
 
-use HeadFirstDesignPatterns\WeatherStation\WeatherData;
-
-final class ForecastDisplay extends AbstractDisplay
+final class ForecastDisplay implements DisplayElement
 {
-    private float $currentPressure = 29.92;
+    public function __construct(
+        private float $currentPressure = 29.92,
+        private float $lastPressure = 0.0,
+    ) {}
 
-    private float $lastPressure;
-
-    public function update(\SplSubject $subject): void
+    public function update(float $pressure): void
     {
-        if (!$subject instanceof WeatherData) {
-            return;
-        }
-
         $this->lastPressure = $this->currentPressure;
-        $this->currentPressure = $subject->getPressure();
-
-        $this->display();
+        $this->currentPressure = $pressure;
     }
 
-    public function display(): void
+    public function display(): string
     {
-        printf("Forecast: %s\n", match (true) {
+        return sprintf('Forecast: %s', match (true) {
             $this->currentPressure > $this->lastPressure => 'Improving weather on the way!',
             $this->currentPressure < $this->lastPressure => 'Watch out for cooler, rainy weather',
             default                                      => 'More of the same',

@@ -14,7 +14,7 @@ final class Application extends ConsoleApplication
 
     private const string VERSION = '1.0.0';
 
-    public function __construct()
+    public function __construct(private readonly ?KernelInterface $kernel = null)
     {
         parent::__construct(self::NAME, self::VERSION);
     }
@@ -40,5 +40,10 @@ final class Application extends ConsoleApplication
         }
 
         return $this;
+    }
+
+    public function getKernel(): ?KernelInterface
+    {
+        return $this->kernel;
     }
 }

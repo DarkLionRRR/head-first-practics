@@ -6,18 +6,22 @@ namespace HeadFirstDesignPatterns\Framework\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use HeadFirstDesignPatterns\WeatherStation\WeatherEvents;
 use HeadFirstDesignPatterns\Framework\Command\DuckAppCommand;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use HeadFirstDesignPatterns\Framework\Console\Helper\ListingHelper;
+use HeadFirstDesignPatterns\WeatherStation\Listener\HeatIndexListener;
 use HeadFirstDesignPatterns\Framework\Command\WeatherStationAppCommand;
+use HeadFirstDesignPatterns\WeatherStation\Listener\ForecastDisplayListener;
+use HeadFirstDesignPatterns\WeatherStation\Listener\StatisticDisplayListener;
+use HeadFirstDesignPatterns\WeatherStation\Listener\CurrentConditionDisplayListener;
 
 final class Kernel implements KernelInterface
 {
-    private Application $app;
+    private ?EventDispatcher $dispatcher = null;
 
-    public function __construct()
-    {
-        $this->app = new Application();
-    }
+    public function __construct(private ?Application $app = null) {}
 
     public static function new(): self
     {
@@ -39,16 +43,64 @@ final class Kernel implements KernelInterface
         ];
     }
 
+    /**
+     * @return array<string, array<class-string>>
+     */
+    public function listeners(): array
+    {
+        return [
+            WeatherEvents::MEASUREMENTS_CHANGED => [
+                CurrentConditionDisplayListener::class,
+                ForecastDisplayListener::class,
+                StatisticDisplayListener::class,
+                HeatIndexListener::class,
+            ],
+        ];
+    }
+
     public function handle(InputInterface $input, OutputInterface $output): int
     {
         try {
-            return $this->app
-                ->registerCommands($this->commands())
-                ->registerHelpers($this->helpers())
-                ->run($input, $output)
-            ;
+            return $this->getApplication()->run($input, $output);
         } catch (\Throwable $t) {
             throw new \RuntimeException($t->getMessage(), $t->getCode(), $t);
+        }
+    }
+
+    public function getDispatcher(): ?EventDispatcherInterface
+    {
+        return $this->dispatcher;
+    }
+
+    private function getApplication(): Application
+    {
+        if (null !== $this->app) {
+            return $this->app;
+        }
+
+        $app = new Application($this)
+            ->registerCommands($this->commands())
+            ->registerHelpers($this->helpers())
+        ;
+        $this->app = $app;
+
+        $this->dispatcher = new EventDispatcher();
+        $app->setDispatcher($this->dispatcher);
+        $this->registerListeners();
+
+        return $app;
+    }
+
+    private function registerListeners(): void
+    {
+        if (null === $this->dispatcher) {
+            return;
+        }
+
+        foreach ($this->listeners() as $eventName => $listeners) {
+            foreach ($listeners as $listener) {
+                $this->dispatcher->addListener($eventName, [new $listener(), 'handle']);
+            }
         }
     }
 }
