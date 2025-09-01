@@ -9,7 +9,7 @@ use Symfony\Component\Console\Helper\Helper;
 final class ListingHelper extends Helper
 {
     /**
-     * @param string[] $elements
+     * @param array<string> $elements
      */
     public function getListing(array $elements): string
     {

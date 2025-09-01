@@ -7,23 +7,34 @@
             "name": "Leo Prusov"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
-      "php": "^8.4",
+        "php": "^8.4",
         "symfony/console": "^7.3",
         "symfony/event-dispatcher": "^7.3"
     },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.48",
+        "friendsofphp/php-cs-fixer": "^3.86",
+        "phpstan/phpstan": "^2.1",
+        "symfony/var-dumper": "^7.3"
+    },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "HeadFirstDesignPatterns\\": "src/"
         }
     },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.86",
-        "phpstan/phpstan": "^2.1"
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
     },
     "scripts": {
-        "lint": "vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.php",
-        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M"
+        "analyse": "vendor/bin/phpstan analyse --memory-limit=512M",
+        "fixer": "vendor/bin/php-cs-fixer fix --diff --config=.php-cs-fixer.php",
+        "lint": [
+            "composer fixer",
+            "composer normalize"
+        ]
     }
 }

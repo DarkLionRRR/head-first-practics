@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\SimUDuck;
 
+use Closure;
+use Traversable;
+use ArrayIterator;
+use IteratorAggregate;
+use InvalidArgumentException;
+
 /**
- * @implements \IteratorAggregate<string, AbstractDuck>
+ * @implements IteratorAggregate<string, AbstractDuck>
  */
-class DuckSet implements \IteratorAggregate
+class DuckSet implements IteratorAggregate
 {
     /** @var array<string, AbstractDuck> */
     private array $ducks = [];
@@ -33,7 +39,7 @@ class DuckSet implements \IteratorAggregate
     public function get(string $name): AbstractDuck
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf('The duck "%s" is not defined.', $name));
+            throw new InvalidArgumentException(sprintf('The duck "%s" is not defined.', $name));
         }
 
         return $this->ducks[$name];
@@ -44,19 +50,19 @@ class DuckSet implements \IteratorAggregate
         return isset($this->ducks[$name]);
     }
 
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->ducks);
+        return new ArrayIterator($this->ducks);
     }
 
     /**
      * @template TReturn
      *
-     * @param \Closure(AbstractDuck, string): TReturn $callback
+     * @param Closure(AbstractDuck, string): TReturn $callback
      *
-     * @return TReturn[]
+     * @return array<TReturn>
      */
-    public function map(\Closure $callback): array
+    public function map(Closure $callback): array
     {
         return array_map($callback, array_values($this->ducks), array_keys($this->ducks));
     }

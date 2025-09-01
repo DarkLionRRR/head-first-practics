@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\Framework\Console;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperInterface;
-use HeadFirstDesignPatterns\Framework\Command\AbstractCommand;
 use Symfony\Component\Console\Application as ConsoleApplication;
 
 final class Application extends ConsoleApplication
@@ -20,18 +20,18 @@ final class Application extends ConsoleApplication
     }
 
     /**
-     * @param class-string<AbstractCommand>[] $commands
+     * @param array<class-string<Command>> $commands
      */
     public function registerCommands(array $commands = []): self
     {
-        $commandInstances = array_map(static fn (string $command): AbstractCommand => new $command(), $commands);
+        $commandInstances = array_map(static fn (string $command): Command => new $command(), $commands);
         $this->addCommands($commandInstances);
 
         return $this;
     }
 
     /**
-     * @param class-string<HelperInterface>[] $helpers
+     * @param array<class-string<HelperInterface>> $helpers
      */
     public function registerHelpers(array $helpers): self
     {

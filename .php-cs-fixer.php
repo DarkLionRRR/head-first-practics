@@ -35,6 +35,14 @@ return new Config()
             ],
         ],
 
-        'declare_strict_types' => true,
+        'yoda_style' => [
+            'equal'            => false,
+            'identical'        => false,
+            'less_and_greater' => false,
+        ],
+
+        'global_namespace_import' => ['import_classes' => true],
+        'declare_strict_types'    => true,
+        'phpdoc_array_type'       => true,
     ])
 ;

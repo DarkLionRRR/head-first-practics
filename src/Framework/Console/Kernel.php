@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace HeadFirstDesignPatterns\Framework\Console;
 
+use Throwable;
+use RuntimeException;
+use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -11,6 +14,8 @@ use HeadFirstDesignPatterns\WeatherStation\WeatherEvents;
 use HeadFirstDesignPatterns\Framework\Command\DuckAppCommand;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use HeadFirstDesignPatterns\Framework\Console\Helper\ListingHelper;
+use HeadFirstDesignPatterns\Framework\Listener\StartCommandListener;
+use HeadFirstDesignPatterns\Framework\Listener\FinishCommandListener;
 use HeadFirstDesignPatterns\WeatherStation\Listener\HeatIndexListener;
 use HeadFirstDesignPatterns\Framework\Command\WeatherStationAppCommand;
 use HeadFirstDesignPatterns\WeatherStation\Listener\ForecastDisplayListener;
@@ -55,6 +60,12 @@ final class Kernel implements KernelInterface
                 StatisticDisplayListener::class,
                 HeatIndexListener::class,
             ],
+            ConsoleEvents::COMMAND => [
+                StartCommandListener::class,
+            ],
+            ConsoleEvents::TERMINATE => [
+                FinishCommandListener::class,
+            ],
         ];
     }
 
@@ -62,8 +73,8 @@ final class Kernel implements KernelInterface
     {
         try {
             return $this->getApplication()->run($input, $output);
-        } catch (\Throwable $t) {
-            throw new \RuntimeException($t->getMessage(), $t->getCode(), $t);
+        } catch (Throwable $t) {
+            throw new RuntimeException($t->getMessage(), $t->getCode(), $t);
         }
     }
 
@@ -74,7 +85,7 @@ final class Kernel implements KernelInterface
 
     private function getApplication(): Application
     {
-        if (null !== $this->app) {
+        if ($this->app !== null) {
             return $this->app;
         }
 
@@ -93,7 +104,7 @@ final class Kernel implements KernelInterface
 
     private function registerListeners(): void
     {
-        if (null === $this->dispatcher) {
+        if ($this->dispatcher === null) {
             return;
         }
 
